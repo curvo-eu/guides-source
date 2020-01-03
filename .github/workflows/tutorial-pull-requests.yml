@@ -1,0 +1,34 @@
+name: Tutorial Pull Requests
+
+on:
+  pull_request:
+    branches-ignore:
+      - super-rentals-tutorial
+    paths:
+      - guides/release/tutorial/**
+
+jobs:
+  do-no-edit:
+    name: Do Not Edit Generated Files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Post Comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            Thank you for your pull request!
+
+            It looks like you made some changes to one of the tutorial files.
+            These files should not be edited directly, as they are the output
+            of an [automated build process][1] – any changes we made here will
+            be undone by the next automated build.
+
+            Instead, please send those changes to the [dedicated tutorial
+            repository][2]. If you look at the first line of the file(s) you
+            edited, there should be a link pointing you to the right place.
+
+            [1]: https://github.com/ember-learn/super-rentals-tutorial/actions?query=workflow%3ABuild+branch%3Amaster
+            [2]: https://github.com/ember-learn/super-rentals-tutorial/
